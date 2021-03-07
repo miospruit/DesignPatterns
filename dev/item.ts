@@ -29,15 +29,27 @@ class Note extends Item {
     }
 }
 
-class itemCollection {
-    items:Item[] = []
+class ItemCollection implements Aggregator {
+    private items:Item[] = []
     factory:ItemFactory
     
     constructor(){
-        this.getItems();
+        this.setItemCollection();
     }
 
     getItems(): Array<Item> {
+        return this.items;
+    }
+
+    getCount(): number{
+        return this.items.length;
+    }
+
+    public addItem(item:Item): void{
+        this.items.push(item);
+    }
+
+    setItemCollection() {
         for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
             if (key === null) {
@@ -48,16 +60,23 @@ class itemCollection {
                 console.log('idiot')
                 }else{
                     let item = JSON.parse(storageItem)
-                    this.items.push(Main.factory.createItem(item.name,item.type,item.description))
+                    this.addItem(Main.factory.createItem(item.name,item.type,item.description))
                 }
             }
         }
-        return this.items;
     }
     
-    addItem(key:string, item: Item): void{
+    storeItem(key:string, item: Item): void{
         let data = JSON.stringify(item);
         localStorage.setItem(key, data);
+    }
+
+    public getIterator(): Iterator<Item> {
+        return new OrderdIterator(this);
+    }
+
+    getReverseIterator(): Iterator<Item> {
+        return new OrderdIterator(this, true);
     }
 
     public clear() {
