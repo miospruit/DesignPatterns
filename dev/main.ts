@@ -1,8 +1,24 @@
 class Main {
-    factory: ItemFactory
+    private static instance: Main;
+    static factory: ItemFactory
+    iterator: Iterator<Item>
+    itemCollection:itemCollection
+
+    public static getInstance(): Main{
+        if(!Main.instance) {
+            Main.instance = new Main();
+        }
+
+        return Main.instance;
+    }
 
     constructor(){
-        this.factory = new ItemFactory();
+        Main.factory = new ItemFactory();
+        this.itemCollection = new itemCollection();
+        let test = this.itemCollection.getItems();
+        console.log(test);
+        
+        // this.iterator = new Iterator();
         let btn = document.getElementById("new");
         let btn2 = document.getElementById("show");
         btn?.addEventListener("click", (_e:Event) => this.createNew())
@@ -10,11 +26,9 @@ class Main {
     }
 
     createNew() {
-        let item = this.factory.createItem("test", 1, "testing function");
-        console.log(this.factory);
-        item.save();
+        let item = Main.factory.createItem("test", 1, "testing2 function");
+        this.itemCollection.addItem(item.name, item)
         item.display();
-        this.show();
     }
 
     show() {
@@ -24,7 +38,7 @@ class Main {
         }else{
             let result = JSON.parse(test);
             // console.log(result, test);
-            let note : Note|ToDo = this.factory.createItem(result.name,result.type,result.description);
+            let note : Note|ToDo = Main.factory.createItem(result.name,result.type,result.description);
             note.display();
         } 
     }

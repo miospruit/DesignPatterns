@@ -9,10 +9,6 @@ class Item {
     display() {
         console.log(this.name);
     }
-    save() {
-        let data = JSON.stringify(this);
-        localStorage.setItem(this.name, data);
-    }
 }
 class ToDo extends Item {
     constructor(name, type, description) {
@@ -22,6 +18,37 @@ class ToDo extends Item {
 class Note extends Item {
     constructor(name, type, description) {
         super(name, type, description);
+    }
+}
+class itemCollection {
+    constructor() {
+        this.getItems();
+    }
+    getItems() {
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (key === null) {
+                console.log('idiot');
+            }
+            else {
+                let storageItem = localStorage.getItem(key);
+                if (storageItem === null) {
+                    console.log('idiot');
+                }
+                else {
+                    let item = JSON.parse(storageItem);
+                    this.items.push(Main.factory.createItem(item.name, item.type, item.description));
+                }
+            }
+        }
+        return this.items;
+    }
+    addItem(key, item) {
+        let data = JSON.stringify(item);
+        localStorage.setItem(key, data);
+    }
+    clear() {
+        localStorage.clear();
     }
 }
 class ItemFactory {
@@ -39,20 +66,40 @@ class ItemFactory {
         }
     }
 }
+class Iterator {
+    constructor(items, _index) {
+        this.items = items;
+        this.index = 0;
+    }
+    hasNext() {
+        this.index;
+        return true;
+    }
+    next() {
+        return new Note("test", 1, "test");
+    }
+}
 class Main {
     constructor() {
-        this.factory = new ItemFactory();
+        Main.factory = new ItemFactory();
+        this.itemCollection = new itemCollection();
+        let test = this.itemCollection.getItems();
+        console.log(test);
         let btn = document.getElementById("new");
         let btn2 = document.getElementById("show");
         btn === null || btn === void 0 ? void 0 : btn.addEventListener("click", (_e) => this.createNew());
         btn2 === null || btn2 === void 0 ? void 0 : btn2.addEventListener("click", (_e) => this.show());
     }
+    static getInstance() {
+        if (!Main.instance) {
+            Main.instance = new Main();
+        }
+        return Main.instance;
+    }
     createNew() {
-        let item = this.factory.createItem("test", 1, "testing function");
-        console.log(this.factory);
-        item.save();
+        let item = Main.factory.createItem("test", 1, "testing2 function");
+        this.itemCollection.addItem(item.name, item);
         item.display();
-        this.show();
     }
     show() {
         let test = localStorage.getItem("test");
@@ -61,7 +108,7 @@ class Main {
         }
         else {
             let result = JSON.parse(test);
-            let note = this.factory.createItem(result.name, result.type, result.description);
+            let note = Main.factory.createItem(result.name, result.type, result.description);
             note.display();
         }
     }

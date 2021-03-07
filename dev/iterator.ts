@@ -1,16 +1,22 @@
-// class Iterator {
-//     items:[];
-//     index:number;
+interface Iteratorinterface {
+    hasNext():boolean
+    next():Note|ToDo
+}
+class Iterator<T> implements Iteratorinterface {
+    items:[];
+    index:number;
 
-//     constructor(items:[],index:number){
-//         this.items = items;
-//         this.index = 0;
-//     }
+    constructor(items:[], _index:number){
+        this.items = items;
+        this.index = 0;
+    }
 
+    hasNext():boolean {
+        this.index;
+        return true
+    }
 
-// }
-
-// interface Iterator {
-//     hasNext()
-//     next()
-// }
+    next():Note|ToDo {
+        return new Note("test", 1, "test");
+    }
+}
