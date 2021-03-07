@@ -30,7 +30,7 @@ class Note extends Item {
 }
 
 class itemCollection {
-    items:Item[]
+    items:Item[] = []
     factory:ItemFactory
     
     constructor(){

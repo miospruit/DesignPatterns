@@ -21,8 +21,10 @@ class Main {
         // this.iterator = new Iterator();
         let btn = document.getElementById("new");
         let btn2 = document.getElementById("show");
+        let btn3 = document.getElementById("clear");
         btn?.addEventListener("click", (_e:Event) => this.createNew())
         btn2?.addEventListener("click", (_e:Event) => this.show())
+        btn3?.addEventListener("click", (_e:Event) => this.itemCollection.clear())
     }
 
     createNew() {

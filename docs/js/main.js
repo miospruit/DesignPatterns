@@ -22,6 +22,7 @@ class Note extends Item {
 }
 class itemCollection {
     constructor() {
+        this.items = [];
         this.getItems();
     }
     getItems() {
@@ -87,8 +88,10 @@ class Main {
         console.log(test);
         let btn = document.getElementById("new");
         let btn2 = document.getElementById("show");
+        let btn3 = document.getElementById("clear");
         btn === null || btn === void 0 ? void 0 : btn.addEventListener("click", (_e) => this.createNew());
         btn2 === null || btn2 === void 0 ? void 0 : btn2.addEventListener("click", (_e) => this.show());
+        btn3 === null || btn3 === void 0 ? void 0 : btn3.addEventListener("click", (_e) => this.itemCollection.clear());
     }
     static getInstance() {
         if (!Main.instance) {
