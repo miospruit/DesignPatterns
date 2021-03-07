@@ -46,6 +46,7 @@ class ItemCollection implements Aggregator {
     }
 
     public addItem(item:Item): void{
+        this.storeItem(item.name, item);
         this.items.push(item);
     }
 
@@ -75,7 +76,7 @@ class ItemCollection implements Aggregator {
         return new OrderdIterator(this);
     }
 
-    getReverseIterator(): Iterator<Item> {
+    public getReverseIterator(): Iterator<Item> {
         return new OrderdIterator(this, true);
     }
 

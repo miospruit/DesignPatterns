@@ -50,6 +50,7 @@ var ItemCollection = (function () {
         return this.items.length;
     };
     ItemCollection.prototype.addItem = function (item) {
+        this.storeItem(item.name, item);
         this.items.push(item);
     };
     ItemCollection.prototype.setItemCollection = function () {
@@ -143,12 +144,16 @@ var Main = (function () {
         var _this = this;
         Main.factory = new ItemFactory();
         this.ItemCollection = new ItemCollection();
+        this.iterator = this.ItemCollection.getIterator();
+        this.reverseIterator = this.ItemCollection.getReverseIterator();
         var test = this.ItemCollection.getItems();
         console.log(test);
         var btn = document.getElementById("new");
         var btn2 = document.getElementById("show");
+        var btn4 = document.getElementById("showr");
         var btn3 = document.getElementById("clear");
         btn === null || btn === void 0 ? void 0 : btn.addEventListener("click", function (_e) { return _this.createNew(); });
+        btn4 === null || btn4 === void 0 ? void 0 : btn4.addEventListener("click", function (_e) { return _this.showReverse(); });
         btn2 === null || btn2 === void 0 ? void 0 : btn2.addEventListener("click", function (_e) { return _this.show(); });
         btn3 === null || btn3 === void 0 ? void 0 : btn3.addEventListener("click", function (_e) { return _this.ItemCollection.clear(); });
     }
@@ -159,37 +164,40 @@ var Main = (function () {
         return Main.instance;
     };
     Main.prototype.createNew = function () {
-        var item = Main.factory.createItem("test", 1, "testing2 function");
+        var item = this.createItem(this.getInput());
+        console.log(item);
         this.ItemCollection.addItem(item);
-        item.display();
     };
     Main.prototype.show = function () {
-        var test = localStorage.getItem("test");
-        if (test === null) {
-            console.log("geen notities of todo");
+        while (this.iterator.valid()) {
+            console.log(this.iterator.next());
         }
-        else {
-            var result = JSON.parse(test);
-            var note = Main.factory.createItem(result.name, result.type, result.description);
-            note.display();
+        this.iterator.rewind();
+    };
+    Main.prototype.showReverse = function () {
+        while (this.reverseIterator.valid()) {
+            console.log(this.reverseIterator.next());
         }
+        this.reverseIterator.rewind();
     };
     Main.prototype.createItem = function (item) {
-        Main.factory.createItem(item[0], item[1], item[2]);
+        return Main.factory.createItem(item[0], item[1], item[2]);
     };
     Main.prototype.getInput = function () {
-        var _a, _b, _c;
         var Input = [];
-        var nameValue = (_a = document.getElementById("name")) === null || _a === void 0 ? void 0 : _a.nodeValue;
-        var typeValue = (_b = document.getElementById("type")) === null || _b === void 0 ? void 0 : _b.nodeValue;
-        var descriptionValue = (_c = document.getElementById("description")) === null || _c === void 0 ? void 0 : _c.nodeValue;
+        var nameValue = document.getElementById("name").value;
+        var typeValue = document.getElementById("type").value;
+        var descriptionValue = document.getElementById("description").value;
         if (typeof nameValue === "string") {
+            console.log(nameValue);
             Input.push(nameValue);
         }
         if (typeValue = "0") {
+            console.log(typeValue);
             Input.push(0);
         }
         if (typeof descriptionValue === "string") {
+            console.log(descriptionValue);
             Input.push(descriptionValue);
         }
         return Input;
