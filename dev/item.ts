@@ -2,31 +2,58 @@ abstract class Item {
     name: string;
     type: number;
     description: string;
+    done: boolean;
     
-    public constructor(name:string, type:number, description:string) {
+    public constructor(name:string, type:number, description:string, done:boolean) {
         this.name = name;
         this.type = type;
         this.description = description;
+        this.done = done;
         console.log(this.type);
     }
 
     public display(): void{
         console.log(this.name);
     }
+
+    public createListItem(item:Item) {
+        let wrapper = document.getElementById("collection")
+        if (wrapper === null) {
+            console.log("wrapper not found");
+        }
+        if (wrapper) {
+            wrapper.innerHTML += `
+            <li>
+                <p>
+                    <label>
+                        <input type="checkbox" />
+                        <span>${this.name}:</span>
+                        <span>${this.description}</span>
+                    </label>
+                </p>
+            </li>`
+        }
+    }
 }
 
 class ToDo extends Item {
     
-    public constructor(name:string, type:number, description:string){
-        super(name, type, description);
+    public constructor(name:string, type:number, description:string, done:boolean){
+        super(name, type, description, done);
     }
+
+
+
+
 }
 
 class Note extends Item {
     
-    public constructor(name:string, type:number, description:string){
-        super(name, type, description);
+    public constructor(name:string, type:number, description:string, done:boolean){
+        super(name, type, description, done);
     }
+
+    
 }
 
 class ItemCollection implements Aggregator {
@@ -61,7 +88,7 @@ class ItemCollection implements Aggregator {
                 console.log('idiot')
                 }else{
                     let item = JSON.parse(storageItem)
-                    this.addItem(Main.factory.createItem(item.name,item.type,item.description))
+                    this.addItem(Main.factory.createItem(item.name,item.type,item.description, item.done))
                 }
             }
         }

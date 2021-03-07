@@ -39,22 +39,23 @@ class Main {
         this.ItemCollection.addItem(item)
     }
 
+
     show() {
         while (this.iterator.valid()) {
-            console.log(this.iterator.next());
+            this.iterator.next().createListItem(this.iterator.next());
         }
         this.iterator.rewind();
     }
 
     showReverse() {
         while (this.reverseIterator.valid()) {
-            console.log(this.reverseIterator.next());
+            this.iterator.next().createListItem(this.iterator.next());
         }
         this.reverseIterator.rewind();
     }
 
     createItem(item:Array<string|number>) :Item {
-        return Main.factory.createItem(item[0] as string, item[1] as number, item[2] as string);
+        return Main.factory.createItem(item[0] as string, item[1] as number, item[2] as string, false as boolean);
     }
 
     getInput() :Array<string|number> {

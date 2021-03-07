@@ -4,20 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
     <title>Typescript</title>
 </head>
 <body>
     <script src="./js/main.js"></script>
-    <input id="new" name="new" type="button" value="new"></input> 
-    <input id="show" name="show" type="button" value="show"></input> 
-    <input id="showr" name="show" type="button" value="showReverse"></input> 
-    <input id="clear" name="show" type="button" value="clear"></input> 
-    <input type="text" id="name" value="name">
-    <select type="select" id="type">
-        <option selected value="0">ToDo</option>
-        <option value="1">Note</option>
-    </select>
-    <input type="text" id="description">
+    <nav>
+        <div class="nav-wrapper">
+    
+            <a href="#" class="brand-logo">Logo</a>
+                <a class="btn-floating btn-large halfway-fab waves-effect waves-light teal" id="new">
+                    <i class="material-icons">add</i>
+                </a>
+        </div>
+      </nav>
+      <div class="container">
+        <button id="show" class="btn waves-effect waves-light">Show
+            <i class="material-icons right">format_list_bulleted</i>
+        </button>
+        <button id="showr" class="btn waves-effect waves-light">Reverse
+            <i class="material-icons right">format_line_spacing</i>
+        </button>
+        <button id="clear" class="btn waves-effect waves-light">Clear
+            <i class="material-icons right">delete_forever</i>
+        </button>
+
+        <div class="row">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s6">
+                  <input placeholder="name" id="name" type="text" class="validate">
+                  <label for="name">Name</label>
+                </div>
+                <div class="input-field col s6">
+                  <input id="description" type="text" class="validate">
+                  <label for="description">Description</label>
+                </div>
+              </div>            
+              <label>Choose ToDo or Note</label>
+              <select class="browser-default" id="type">
+                <option value="0" selected>ToDo</option>
+                <option value="1">Note</option>
+              </select>
+            </form>
+        </div>
+        <ul id="collection">
+
+        </ul>
+        </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

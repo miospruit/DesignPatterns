@@ -13,28 +13,38 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Item = (function () {
-    function Item(name, type, description) {
+    function Item(name, type, description, done) {
         this.name = name;
         this.type = type;
         this.description = description;
+        this.done = done;
         console.log(this.type);
     }
     Item.prototype.display = function () {
         console.log(this.name);
     };
+    Item.prototype.createListItem = function (item) {
+        var wrapper = document.getElementById("collection");
+        if (wrapper === null) {
+            console.log("wrapper not found");
+        }
+        if (wrapper) {
+            wrapper.innerHTML += "\n            <li>\n                <p>\n                    <label>\n                        <input type=\"checkbox\" />\n                        <span>" + this.name + ":</span>\n                        <span>" + this.description + "</span>\n                    </label>\n                </p>\n            </li>";
+        }
+    };
     return Item;
 }());
 var ToDo = (function (_super) {
     __extends(ToDo, _super);
-    function ToDo(name, type, description) {
-        return _super.call(this, name, type, description) || this;
+    function ToDo(name, type, description, done) {
+        return _super.call(this, name, type, description, done) || this;
     }
     return ToDo;
 }(Item));
 var Note = (function (_super) {
     __extends(Note, _super);
-    function Note(name, type, description) {
-        return _super.call(this, name, type, description) || this;
+    function Note(name, type, description, done) {
+        return _super.call(this, name, type, description, done) || this;
     }
     return Note;
 }(Item));
@@ -66,7 +76,7 @@ var ItemCollection = (function () {
                 }
                 else {
                     var item = JSON.parse(storageItem);
-                    this.addItem(Main.factory.createItem(item.name, item.type, item.description));
+                    this.addItem(Main.factory.createItem(item.name, item.type, item.description, item.done));
                 }
             }
         }
@@ -86,19 +96,30 @@ var ItemCollection = (function () {
     };
     return ItemCollection;
 }());
+var Decorator = (function () {
+    function Decorator(component) {
+        this.component = component;
+    }
+    Decorator.prototype.display = function () {
+        throw new Error("Method not implemented.");
+    };
+    Decorator.prototype.createListItem = function () {
+    };
+    return Decorator;
+}());
 var ItemFactory = (function () {
     function ItemFactory() {
     }
-    ItemFactory.prototype.createItem = function (name, type, description) {
+    ItemFactory.prototype.createItem = function (name, type, description, done) {
         switch (type) {
             case 0:
-                return new ToDo(name, type, description);
+                return new ToDo(name, type, description, done);
                 break;
             case 1:
-                return new Note(name, type, description);
+                return new Note(name, type, description, done);
                 break;
             default:
-                return new ToDo(name, type, description);
+                return new ToDo(name, type, description, done);
                 break;
         }
     };
@@ -170,18 +191,18 @@ var Main = (function () {
     };
     Main.prototype.show = function () {
         while (this.iterator.valid()) {
-            console.log(this.iterator.next());
+            this.iterator.next().createListItem(this.iterator.next());
         }
         this.iterator.rewind();
     };
     Main.prototype.showReverse = function () {
         while (this.reverseIterator.valid()) {
-            console.log(this.reverseIterator.next());
+            this.iterator.next().createListItem(this.iterator.next());
         }
         this.reverseIterator.rewind();
     };
     Main.prototype.createItem = function (item) {
-        return Main.factory.createItem(item[0], item[1], item[2]);
+        return Main.factory.createItem(item[0], item[1], item[2], false);
     };
     Main.prototype.getInput = function () {
         var Input = [];
