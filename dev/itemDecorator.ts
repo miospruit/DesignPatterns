@@ -10,15 +10,18 @@ class Decorator implements Item {
 
     constructor(component:Item) {
         this.component = component;
+        this.name = component.name;
+        this.type = component.type;
+        this.description = component.description;
     }
 
-    public createListItem(item:Item) {
+    public createListItem() {
         return this.component.createListItem(item);
     }
 }
 
 class NoteDecorator extends Decorator {
-    public createListItem(item:Item) {
+    public createListItem() {
         
         let wrapper = document.getElementById("collection")
         if (wrapper === null) {
@@ -29,8 +32,8 @@ class NoteDecorator extends Decorator {
             <li class="collection-item">
                 <p>
                     <label>
-                        <span>${item.name}:</span>
-                        <span>${item.description}</span>
+                        <span>${this.name}:</span>
+                        <span>${this.description}</span>
                     </label>
                 </p>
             </li>`
@@ -39,7 +42,7 @@ class NoteDecorator extends Decorator {
 }
 
 class ToDoDecorator extends Decorator {
-    public createListItem(item:Item) {
+    public createListItem() {
         
         let wrapper = document.getElementById("collection")
         if (wrapper === null) {
@@ -51,8 +54,8 @@ class ToDoDecorator extends Decorator {
                 <p>
                     <label>
                         <input type="checkbox" />
-                        <span>${item.name}:</span>
-                        <span>${item.description}</span>
+                        <span>${this.name}:</span>
+                        <span>${this.description}</span>
                     </label>
                 </p>
             </li>`

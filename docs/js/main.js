@@ -95,11 +95,14 @@ var ItemCollection = (function () {
 var Decorator = (function () {
     function Decorator(component) {
         this.component = component;
+        this.name = component.name;
+        this.type = component.type;
+        this.description = component.description;
     }
     Decorator.prototype.display = function () {
         throw new Error("Method not implemented.");
     };
-    Decorator.prototype.createListItem = function (item) {
+    Decorator.prototype.createListItem = function () {
         return this.component.createListItem(item);
     };
     return Decorator;
@@ -109,13 +112,13 @@ var NoteDecorator = (function (_super) {
     function NoteDecorator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    NoteDecorator.prototype.createListItem = function (item) {
+    NoteDecorator.prototype.createListItem = function () {
         var wrapper = document.getElementById("collection");
         if (wrapper === null) {
             console.log("wrapper not found");
         }
         if (wrapper) {
-            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                <p>\n                    <label>\n                        <span>" + item.name + ":</span>\n                        <span>" + item.description + "</span>\n                    </label>\n                </p>\n            </li>";
+            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                <p>\n                    <label>\n                        <span>" + this.name + ":</span>\n                        <span>" + this.description + "</span>\n                    </label>\n                </p>\n            </li>";
         }
     };
     return NoteDecorator;
@@ -125,13 +128,13 @@ var ToDoDecorator = (function (_super) {
     function ToDoDecorator() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    ToDoDecorator.prototype.createListItem = function (item) {
+    ToDoDecorator.prototype.createListItem = function () {
         var wrapper = document.getElementById("collection");
         if (wrapper === null) {
             console.log("wrapper not found");
         }
         if (wrapper) {
-            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                <p>\n                    <label>\n                        <input type=\"checkbox\" />\n                        <span>" + item.name + ":</span>\n                        <span>" + item.description + "</span>\n                    </label>\n                </p>\n            </li>";
+            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                <p>\n                    <label>\n                        <input type=\"checkbox\" />\n                        <span>" + this.name + ":</span>\n                        <span>" + this.description + "</span>\n                    </label>\n                </p>\n            </li>";
         }
     };
     return ToDoDecorator;
@@ -225,11 +228,11 @@ var Main = (function () {
                 var item = this.iterator.next();
                 if (item.type == 0) {
                     var todo = new ToDoDecorator(item);
-                    todo.createListItem(todo);
+                    todo.createListItem();
                 }
                 if (item.type == 1) {
                     var note = new NoteDecorator(item);
-                    note.createListItem(note);
+                    note.createListItem();
                 }
             }
             this.iterator.rewind();
@@ -243,11 +246,11 @@ var Main = (function () {
                 var item = this.reverseIterator.next();
                 if (item.type == 0) {
                     var todo = new ToDoDecorator(item);
-                    todo.createListItem(item);
+                    todo.createListItem();
                 }
                 if (item.type == 1) {
                     var note = new NoteDecorator(item);
-                    note.createListItem(item);
+                    note.createListItem();
                 }
             }
             this.reverseIterator.rewind();

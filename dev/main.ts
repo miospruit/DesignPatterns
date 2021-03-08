@@ -47,11 +47,11 @@ class Main {
                 let item = this.iterator.next();
                 if (item.type == 0) {
                     let todo = new ToDoDecorator(item);
-                    todo.createListItem(todo);
+                    todo.createListItem();
                 }
                 if (item.type == 1) {
                     let note = new NoteDecorator(item);
-                    note.createListItem(note);
+                    note.createListItem();
                 }
             }
             this.iterator.rewind();
@@ -67,11 +67,11 @@ class Main {
                 let item = this.reverseIterator.next();
                 if (item.type == 0) {
                     let todo = new ToDoDecorator(item);
-                    todo.createListItem(item);
+                    todo.createListItem();
                 }
                 if (item.type == 1) {
                     let note = new NoteDecorator(item);
-                    note.createListItem(item);
+                    note.createListItem();
                 }
             }
             this.reverseIterator.rewind();
