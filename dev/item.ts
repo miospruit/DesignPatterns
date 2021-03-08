@@ -2,13 +2,11 @@ abstract class Item {
     name: string;
     type: number;
     description: string;
-    done: boolean;
     
-    public constructor(name:string, type:number, description:string, done:boolean) {
+    public constructor(name:string, type:number, description:string) {
         this.name = name;
         this.type = type;
         this.description = description;
-        this.done = done;
         console.log(this.type);
     }
 
@@ -18,42 +16,27 @@ abstract class Item {
 
     public createListItem(item:Item) {
         let wrapper = document.getElementById("collection")
-        if (wrapper === null) {
-            console.log("wrapper not found");
-        }
-        if (wrapper) {
-            wrapper.innerHTML += `
-            <li>
-                <p>
-                    <label>
-                        <input type="checkbox" />
-                        <span>${this.name}:</span>
-                        <span>${this.description}</span>
-                    </label>
-                </p>
+        if (wrapper) {wrapper.innerHTML += `
+            <li class="collection-item">
+                ${item.name}
             </li>`
-        }
+        }  
     }
 }
 
 class ToDo extends Item {
     
-    public constructor(name:string, type:number, description:string, done:boolean){
-        super(name, type, description, done);
+    public constructor(name:string, type:number, description:string){
+        super(name, type, description);
     }
-
-
-
-
 }
 
 class Note extends Item {
     
-    public constructor(name:string, type:number, description:string, done:boolean){
-        super(name, type, description, done);
+    public constructor(name:string, type:number, description:string){
+        super(name, type, description);
     }
 
-    
 }
 
 class ItemCollection implements Aggregator {
@@ -81,14 +64,14 @@ class ItemCollection implements Aggregator {
         for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
             if (key === null) {
-                console.log('idiot')
+                console.log('nothing stored')
             }else{
                 let storageItem = localStorage.getItem(key)
                 if(storageItem === null){
                 console.log('idiot')
                 }else{
                     let item = JSON.parse(storageItem)
-                    this.addItem(Main.factory.createItem(item.name,item.type,item.description, item.done))
+                    this.addItem(Main.factory.createItem(item.name as string,item.type as number,item.description as string))
                 }
             }
         }

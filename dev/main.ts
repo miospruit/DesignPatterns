@@ -41,21 +41,46 @@ class Main {
 
 
     show() {
-        while (this.iterator.valid()) {
-            this.iterator.next().createListItem(this.iterator.next());
+        let wrapper = document.getElementById("collection");
+        if (wrapper) {
+            while (this.iterator.valid()) {
+                let item = this.iterator.next();
+                if (item.type == 0) {
+                    let todo = new ToDoDecorator(item);
+                    todo.createListItem(todo);
+                }
+                if (item.type == 1) {
+                    let note = new NoteDecorator(item);
+                    note.createListItem(note);
+                }
+            }
+            this.iterator.rewind();
+            
         }
-        this.iterator.rewind();
+        console.log(this.iterator.current())
     }
 
     showReverse() {
-        while (this.reverseIterator.valid()) {
-            this.iterator.next().createListItem(this.iterator.next());
+        let wrapper = document.getElementById("collection");
+        if (wrapper) {
+            while (this.reverseIterator.valid()) {
+                let item = this.reverseIterator.next();
+                if (item.type == 0) {
+                    let todo = new ToDoDecorator(item);
+                    todo.createListItem(item);
+                }
+                if (item.type == 1) {
+                    let note = new NoteDecorator(item);
+                    note.createListItem(item);
+                }
+            }
+            this.reverseIterator.rewind();
+            
         }
-        this.reverseIterator.rewind();
     }
 
     createItem(item:Array<string|number>) :Item {
-        return Main.factory.createItem(item[0] as string, item[1] as number, item[2] as string, false as boolean);
+        return Main.factory.createItem(item[0] as string, item[1] as number, item[2] as string);
     }
 
     getInput() :Array<string|number> {
@@ -67,14 +92,19 @@ class Main {
             console.log(nameValue)
             Input.push(nameValue);
         }
-        if (typeValue = "0") {
+        if (typeValue == "0") {
             console.log(typeValue)
             Input.push(0);
+        }
+        if (typeValue == "1") {
+            console.log(typeValue)
+            Input.push(1);
         }
         if (typeof descriptionValue === "string") {
             console.log(descriptionValue)
             Input.push(descriptionValue);
         }
+        console.log(Input);
         return Input;
     }
 }

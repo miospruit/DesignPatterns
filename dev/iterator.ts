@@ -22,7 +22,7 @@ class OrderdIterator implements Iterator<Item> {
     public rewind(){
         this.position = this.reverse ?
         this.collection.getCount() - 1 :
-        0;
+            0;
     }
     public current(): Item{
         return this.collection.getItems()[this.position];
