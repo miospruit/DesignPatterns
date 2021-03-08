@@ -16,7 +16,7 @@ class Decorator implements Item {
     }
 
     public createListItem() {
-        return this.component.createListItem(item);
+        return this.component.createListItem();
     }
 }
 

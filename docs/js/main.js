@@ -22,10 +22,10 @@ var Item = (function () {
     Item.prototype.display = function () {
         console.log(this.name);
     };
-    Item.prototype.createListItem = function (item) {
+    Item.prototype.createListItem = function () {
         var wrapper = document.getElementById("collection");
         if (wrapper) {
-            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                " + item.name + "\n            </li>";
+            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                " + this.name + "\n            </li>";
         }
     };
     return Item;
@@ -103,7 +103,7 @@ var Decorator = (function () {
         throw new Error("Method not implemented.");
     };
     Decorator.prototype.createListItem = function () {
-        return this.component.createListItem(item);
+        return this.component.createListItem();
     };
     return Decorator;
 }());

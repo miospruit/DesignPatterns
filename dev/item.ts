@@ -14,11 +14,11 @@ abstract class Item {
         console.log(this.name);
     }
 
-    public createListItem(item:Item) {
+    public createListItem() {
         let wrapper = document.getElementById("collection")
         if (wrapper) {wrapper.innerHTML += `
             <li class="collection-item">
-                ${item.name}
+                ${this.name}
             </li>`
         }  
     }
