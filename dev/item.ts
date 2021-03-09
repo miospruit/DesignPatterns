@@ -13,6 +13,15 @@ abstract class Item {
     public display(): void{
         console.log(this.name);
     }
+
+    public createListItem() {
+        let wrapper = document.getElementById("collection")
+        if (wrapper) {wrapper.innerHTML += `
+            <li class="collection-item">
+                ${this.name}
+            </li>`
+        }  
+    }
 }
 
 class ToDo extends Item {
@@ -27,6 +36,7 @@ class Note extends Item {
     public constructor(name:string, type:number, description:string){
         super(name, type, description);
     }
+
 }
 
 class ItemCollection implements Aggregator {
@@ -54,14 +64,14 @@ class ItemCollection implements Aggregator {
         for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
             if (key === null) {
-                console.log('idiot')
+                console.log('nothing stored')
             }else{
                 let storageItem = localStorage.getItem(key)
                 if(storageItem === null){
                 console.log('idiot')
                 }else{
                     let item = JSON.parse(storageItem)
-                    this.addItem(Main.factory.createItem(item.name,item.type,item.description))
+                    this.addItem(Main.factory.createItem(item.name as string,item.type as number,item.description as string))
                 }
             }
         }

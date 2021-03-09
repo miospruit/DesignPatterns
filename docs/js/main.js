@@ -22,6 +22,12 @@ var Item = (function () {
     Item.prototype.display = function () {
         console.log(this.name);
     };
+    Item.prototype.createListItem = function () {
+        var wrapper = document.getElementById("collection");
+        if (wrapper) {
+            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                " + this.name + "\n            </li>";
+        }
+    };
     return Item;
 }());
 var ToDo = (function (_super) {
@@ -57,7 +63,7 @@ var ItemCollection = (function () {
         for (var i = 0; i < localStorage.length; i++) {
             var key = localStorage.key(i);
             if (key === null) {
-                console.log('idiot');
+                console.log('nothing stored');
             }
             else {
                 var storageItem = localStorage.getItem(key);
@@ -86,6 +92,53 @@ var ItemCollection = (function () {
     };
     return ItemCollection;
 }());
+var Decorator = (function () {
+    function Decorator(component) {
+        this.component = component;
+        this.name = component.name;
+        this.type = component.type;
+        this.description = component.description;
+    }
+    Decorator.prototype.display = function () {
+        throw new Error("Method not implemented.");
+    };
+    Decorator.prototype.createListItem = function () {
+        return this.component.createListItem();
+    };
+    return Decorator;
+}());
+var NoteDecorator = (function (_super) {
+    __extends(NoteDecorator, _super);
+    function NoteDecorator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    NoteDecorator.prototype.createListItem = function () {
+        var wrapper = document.getElementById("collection");
+        if (wrapper === null) {
+            console.log("wrapper not found");
+        }
+        if (wrapper) {
+            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                <p>\n                    <label>\n                        <span>" + this.name + ":</span>\n                        <span>" + this.description + "</span>\n                    </label>\n                </p>\n            </li>";
+        }
+    };
+    return NoteDecorator;
+}(Decorator));
+var ToDoDecorator = (function (_super) {
+    __extends(ToDoDecorator, _super);
+    function ToDoDecorator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ToDoDecorator.prototype.createListItem = function () {
+        var wrapper = document.getElementById("collection");
+        if (wrapper === null) {
+            console.log("wrapper not found");
+        }
+        if (wrapper) {
+            wrapper.innerHTML += "\n            <li class=\"collection-item\">\n                <p>\n                    <label>\n                        <input type=\"checkbox\" />\n                        <span>" + this.name + ":</span>\n                        <span>" + this.description + "</span>\n                    </label>\n                </p>\n            </li>";
+        }
+    };
+    return ToDoDecorator;
+}(Decorator));
 var ItemFactory = (function () {
     function ItemFactory() {
     }
@@ -98,7 +151,7 @@ var ItemFactory = (function () {
                 return new Note(name, type, description);
                 break;
             default:
-                return new ToDo(name, type, description);
+                return new Note(name, type, description);
                 break;
         }
     };
@@ -169,16 +222,39 @@ var Main = (function () {
         this.ItemCollection.addItem(item);
     };
     Main.prototype.show = function () {
-        while (this.iterator.valid()) {
-            console.log(this.iterator.next());
+        var wrapper = document.getElementById("collection");
+        if (wrapper) {
+            while (this.iterator.valid()) {
+                var item = this.iterator.next();
+                if (item.type == 0) {
+                    var todo = new ToDoDecorator(item);
+                    todo.createListItem();
+                }
+                if (item.type == 1) {
+                    var note = new NoteDecorator(item);
+                    note.createListItem();
+                }
+            }
+            this.iterator.rewind();
         }
-        this.iterator.rewind();
+        console.log(this.iterator.current());
     };
     Main.prototype.showReverse = function () {
-        while (this.reverseIterator.valid()) {
-            console.log(this.reverseIterator.next());
+        var wrapper = document.getElementById("collection");
+        if (wrapper) {
+            while (this.reverseIterator.valid()) {
+                var item = this.reverseIterator.next();
+                if (item.type == 0) {
+                    var todo = new ToDoDecorator(item);
+                    todo.createListItem();
+                }
+                if (item.type == 1) {
+                    var note = new NoteDecorator(item);
+                    note.createListItem();
+                }
+            }
+            this.reverseIterator.rewind();
         }
-        this.reverseIterator.rewind();
     };
     Main.prototype.createItem = function (item) {
         return Main.factory.createItem(item[0], item[1], item[2]);
@@ -192,14 +268,19 @@ var Main = (function () {
             console.log(nameValue);
             Input.push(nameValue);
         }
-        if (typeValue = "0") {
+        if (typeValue == "0") {
             console.log(typeValue);
             Input.push(0);
+        }
+        if (typeValue == "1") {
+            console.log(typeValue);
+            Input.push(1);
         }
         if (typeof descriptionValue === "string") {
             console.log(descriptionValue);
             Input.push(descriptionValue);
         }
+        console.log(Input);
         return Input;
     };
     return Main;

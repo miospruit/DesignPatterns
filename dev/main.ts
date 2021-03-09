@@ -39,18 +39,44 @@ class Main {
         this.ItemCollection.addItem(item)
     }
 
+
     show() {
-        while (this.iterator.valid()) {
-            console.log(this.iterator.next());
+        let wrapper = document.getElementById("collection");
+        if (wrapper) {
+            while (this.iterator.valid()) {
+                let item = this.iterator.next();
+                if (item.type == 0) {
+                    let todo = new ToDoDecorator(item);
+                    todo.createListItem();
+                }
+                if (item.type == 1) {
+                    let note = new NoteDecorator(item);
+                    note.createListItem();
+                }
+            }
+            this.iterator.rewind();
+            
         }
-        this.iterator.rewind();
+        console.log(this.iterator.current())
     }
 
     showReverse() {
-        while (this.reverseIterator.valid()) {
-            console.log(this.reverseIterator.next());
+        let wrapper = document.getElementById("collection");
+        if (wrapper) {
+            while (this.reverseIterator.valid()) {
+                let item = this.reverseIterator.next();
+                if (item.type == 0) {
+                    let todo = new ToDoDecorator(item);
+                    todo.createListItem();
+                }
+                if (item.type == 1) {
+                    let note = new NoteDecorator(item);
+                    note.createListItem();
+                }
+            }
+            this.reverseIterator.rewind();
+            
         }
-        this.reverseIterator.rewind();
     }
 
     createItem(item:Array<string|number>) :Item {
@@ -66,14 +92,19 @@ class Main {
             console.log(nameValue)
             Input.push(nameValue);
         }
-        if (typeValue = "0") {
+        if (typeValue == "0") {
             console.log(typeValue)
             Input.push(0);
+        }
+        if (typeValue == "1") {
+            console.log(typeValue)
+            Input.push(1);
         }
         if (typeof descriptionValue === "string") {
             console.log(descriptionValue)
             Input.push(descriptionValue);
         }
+        console.log(Input);
         return Input;
     }
 }

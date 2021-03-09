@@ -8,7 +8,7 @@ class ItemFactory {
                 return new Note(name, type, description);
                 break;
             default:
-                return new ToDo(name, type, description);
+                return new Note(name, type, description);
                 break;
         }
     }
